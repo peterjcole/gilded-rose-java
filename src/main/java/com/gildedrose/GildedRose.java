@@ -27,7 +27,7 @@ class GildedRose {
         }
     }
 
-    private void expire(Item item) {
+    private void setQualityToZero(Item item) {
         item.quality = 0;
     }
 
@@ -46,18 +46,22 @@ class GildedRose {
     }
 
     public void handleItem(Item item) {
-        switch (item.name) {
-            case "Aged Brie":
-                handlePreservedItem(item);
-                break;
-            case "Sulfuras, Hand of Ragnaros":
-                handleEpicItem(item);
-                break;
-            case "Backstage passes to a TAFKAL80ETC concert":
-                handleDeadlineItem(item);
-                break;
-            default:
-                handleStandardItem(item);
+        try {
+            switch (item.name) {
+                case "Aged Brie":
+                    handlePreservedItem(item);
+                    break;
+                case "Sulfuras, Hand of Ragnaros":
+                    handleEpicItem(item);
+                    break;
+                case "Backstage passes to a TAFKAL80ETC concert":
+                    handleDeadlineItem(item);
+                    break;
+                default:
+                    handleStandardItem(item);
+            }
+        } catch (PerishableItemExpiredException e) {
+
         }
     }
 
@@ -81,15 +85,16 @@ class GildedRose {
 
     public void handleDeadlineItem(Item item) {
         increaseQualityOf(item);
+        reduceSellIn(item);
+        if(isExpired(item)) {
+            setQualityToZero(item);
+            throw new PerishableItemExpiredException(item); 
+        }
         if (isInDemand(item)) {
             increaseQualityOf(item);
         }
         if (isCoveted(item)) {
             increaseQualityOf(item);
-        }
-        reduceSellIn(item);
-        if(isExpired(item)) {
-            expire(item);
         }
     }
 }
