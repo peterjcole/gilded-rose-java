@@ -1,42 +1,12 @@
 package com.gildedrose;
 
+import static com.gildedrose.ItemUtils.*;
+
 class GildedRose {
     Item[] items;
 
     public GildedRose(Item[] items) {
         this.items = items;
-    }
-
-    private void reduceSellIn(Item item){
-        item.sellIn -= 1;
-    }
-
-    private boolean isExpired(Item item) {
-        return item.sellIn < 0;
-    }
-
-    private void reduceQualityOf(Item item) {
-        if (item.quality > 0) {
-            item.quality -= 1;
-        }
-    }
-
-    private void increaseQualityOf(Item item) {
-        if (item.quality < 50) {
-            item.quality += 1;
-        }
-    }
-
-    private void setQualityToZero(Item item) {
-        item.quality = 0;
-    }
-
-    private boolean isInDemand(Item item) {
-        return item.sellIn <= 10;
-    }
-
-    private boolean isCoveted(Item item) {
-        return item.sellIn <= 5;
     }
 
     public void updateQuality() {
@@ -67,7 +37,7 @@ class GildedRose {
 
     public void handleStandardItem(Item item) {
         reduceQualityOf(item);
-        reduceSellIn(item);
+        reduceSellInOf(item);
         if(isExpired(item)) {
             reduceQualityOf(item);
         }
@@ -75,7 +45,7 @@ class GildedRose {
 
     public void handlePreservedItem(Item item) {
         increaseQualityOf(item);
-        reduceSellIn(item);
+        reduceSellInOf(item);
         if(isExpired(item)) {
             increaseQualityOf(item);
         }
@@ -85,7 +55,7 @@ class GildedRose {
 
     public void handleDeadlineItem(Item item) {
         increaseQualityOf(item);
-        reduceSellIn(item);
+        reduceSellInOf(item);
         if(isExpired(item)) {
             setQualityToZero(item);
             throw new PerishableItemExpiredException(item); 
