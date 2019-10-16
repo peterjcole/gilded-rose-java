@@ -131,7 +131,7 @@ public class GildedRoseTest {
     }
 
     @Test
-    public void updateQuality_shouldSetQualityTo0_whenSellInIsBelowZero() {
+    public void updateQuality_shouldSetQualityForBackStagePassesToZero_whenSellInIsBelowZero() {
         Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20) };
         GildedRose app = new GildedRose(items);
         app.updateQuality();

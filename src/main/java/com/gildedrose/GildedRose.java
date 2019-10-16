@@ -90,16 +90,13 @@ class GildedRose {
     public void handleItem(Item item) {
         switch (item.name) {
             case "Aged Brie":
-                // handlePreservedItem(item);
-                useLegacyItemStrategy(item);
+                handlePreservedItem(item);
                 break;
             case "Sulfuras, Hand of Ragnaros":
-                // handleEpicItem(item);
-                useLegacyItemStrategy(item);
+                handleEpicItem(item);
                 break;
             case "Backstage passes to a TAFKAL80ETC concert":
-                // handleDeadlineItem(item);
-                useLegacyItemStrategy(item);
+                handleDeadlineItem(item);
                 break;
             default:
                 handleStandardItem(item);
@@ -113,4 +110,31 @@ class GildedRose {
             reduceQualityOf(item);
         }
     }
+
+    public void handlePreservedItem(Item item) {
+        increaseQualityOf(item);
+        reduceSellIn(item);
+        if(isExpired(item)) {
+            increaseQualityOf(item);
+        }
+    }
+
+    public void handleEpicItem(Item item) {
+    }
+
+    public void handleDeadlineItem(Item item) {
+        increaseQualityOf(item);
+        if (isInDemand(item)) {
+            increaseQualityOf(item);
+        }
+        if (isCoveted(item)) {
+            increaseQualityOf(item);
+        }
+
+        reduceSellIn(item);
+        if(isExpired(item)) {
+            expire(item);
+        }
+    }
+
 }
