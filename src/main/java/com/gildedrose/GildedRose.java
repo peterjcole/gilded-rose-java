@@ -9,21 +9,23 @@ class GildedRose {
 
     private void reduceSellIn(Item item){
         if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-          item.sellIn = item.sellIn - 1;
+          item.sellIn -= 1;
       }
     }
 
+    private boolean isExpired(Item item) {
+        return item.sellIn < 0;
+    }
+
     private void handleExpiredItems(Item item){
-        if (item.sellIn < 0) {
+        if (isExpired(item)) {
             if (!item.name.equals("Aged Brie")) {
                 if (!item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                    if (item.quality > 0) {
-                        if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                            item.quality = item.quality - 1;
-                        }
+                    if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+                        reduceQualityOf(item);
                     }
                 } else {
-                    item.quality = item.quality - item.quality;
+                    expire(item);
                 }
             } else {
                 increaseQualityOf(item);
@@ -39,8 +41,20 @@ class GildedRose {
 
     private void increaseQualityOf(Item item) {
         if (item.quality < 50) {
-            item.quality = item.quality + 1;
+            item.quality += 1;
         }
+    }
+
+    private void expire(Item item) {
+        item.quality = 0;
+    }
+
+    private boolean isInDemand(Item item) {
+        return item.sellIn <= 10;
+    }
+
+    private boolean isCoveted(Item item) {
+        return item.sellIn <= 5;
     }
 
     private void handleQualityUpdate(Item item) {
@@ -50,13 +64,11 @@ class GildedRose {
             reduceQualityOf(item);
         } else {
             increaseQualityOf(item);
-
             if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (item.sellIn < 11) {
+                if (isInDemand(item)) {
                     increaseQualityOf(item);
                 }
-
-                if (item.sellIn < 6) {
+                if (isCoveted(item)) {
                     increaseQualityOf(item);
                 }
             }
