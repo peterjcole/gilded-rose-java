@@ -8,29 +8,11 @@ class GildedRose {
     }
 
     private void reduceSellIn(Item item){
-        if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-          item.sellIn -= 1;
-      }
+        item.sellIn -= 1;
     }
 
     private boolean isExpired(Item item) {
         return item.sellIn < 0;
-    }
-
-    private void handleExpiredItems(Item item){
-        if (isExpired(item)) {
-            if (!item.name.equals("Aged Brie")) {
-                if (!item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                    if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                        reduceQualityOf(item);
-                    }
-                } else {
-                    expire(item);
-                }
-            } else {
-                increaseQualityOf(item);
-            }
-        }
     }
 
     private void reduceQualityOf(Item item) {
@@ -57,34 +39,10 @@ class GildedRose {
         return item.sellIn <= 5;
     }
 
-    private void handleQualityUpdate(Item item) {
-        if (!item.name.equals("Aged Brie")
-                    && !item.name.equals("Backstage passes to a TAFKAL80ETC concert")
-                    && !item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            reduceQualityOf(item);
-        } else {
-            increaseQualityOf(item);
-            if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (isInDemand(item)) {
-                    increaseQualityOf(item);
-                }
-                if (isCoveted(item)) {
-                    increaseQualityOf(item);
-                }
-            }
-        }
-    }
-
     public void updateQuality() {
         for (Item item : items ) {
             handleItem(item);
         }
-    }
-
-    public void useLegacyItemStrategy(Item item) {
-        handleQualityUpdate(item);
-        reduceSellIn(item);
-        handleExpiredItems(item);
     }
 
     public void handleItem(Item item) {
@@ -119,8 +77,7 @@ class GildedRose {
         }
     }
 
-    public void handleEpicItem(Item item) {
-    }
+    public void handleEpicItem(Item item) {}
 
     public void handleDeadlineItem(Item item) {
         increaseQualityOf(item);
@@ -130,11 +87,9 @@ class GildedRose {
         if (isCoveted(item)) {
             increaseQualityOf(item);
         }
-
         reduceSellIn(item);
         if(isExpired(item)) {
             expire(item);
         }
     }
-
 }
