@@ -1,5 +1,5 @@
 package com.gildedrose;
 
-public class StandardItemStrategy {
+public class StandardItemStrategy implements ItemStrategy {
 
 }
