@@ -77,9 +77,40 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items ) {
-            handleQualityUpdate(item);
-            reduceSellIn(item);
-            handleExpiredItems(item);
+            handleItem(item);
+        }
+    }
+
+    public void useLegacyItemStrategy(Item item) {
+        handleQualityUpdate(item);
+        reduceSellIn(item);
+        handleExpiredItems(item);
+    }
+
+    public void handleItem(Item item) {
+        switch (item.name) {
+            case "Aged Brie":
+                // handlePreservedItem(item);
+                useLegacyItemStrategy(item);
+                break;
+            case "Sulfuras, Hand of Ragnaros":
+                // handleEpicItem(item);
+                useLegacyItemStrategy(item);
+                break;
+            case "Backstage passes to a TAFKAL80ETC concert":
+                // handleDeadlineItem(item);
+                useLegacyItemStrategy(item);
+                break;
+            default:
+                handleStandardItem(item);
+        }
+    }
+
+    public void handleStandardItem(Item item) {
+        reduceQualityOf(item);
+        reduceSellIn(item);
+        if(isExpired(item)) {
+            reduceQualityOf(item);
         }
     }
 }
