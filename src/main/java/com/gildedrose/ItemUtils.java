@@ -4,12 +4,11 @@ public class ItemUtils {
 
     public static final int MAXIMUM_QUALITY = 50;
 
-    public static void reduceQualityOf(Item item) {
-        item.quality = item.quality > 0 ? item.quality - 1 : item.quality;
-    }
+    public static void adjustQuality(Item item, int qualityAdjustment) {
+        boolean tooHigh = qualityTooHigh(item, qualityAdjustment);
+        boolean tooLow = qualityTooLow(item);
 
-    public static void increaseQualityOf(Item item) {
-        item.quality = item.quality >= MAXIMUM_QUALITY ? MAXIMUM_QUALITY : item.quality + 1;
+        item.quality += tooHigh || tooLow ? 0 : qualityAdjustment;
     }
 
     public static void reduceSellInOf(Item item) {
@@ -30,5 +29,13 @@ public class ItemUtils {
 
     public static boolean isCoveted(Item item) {
         return item.sellIn <= 5;
+    }
+
+    private static boolean qualityTooHigh(Item item, int qualityAdjustment) {
+        return item.quality + qualityAdjustment > MAXIMUM_QUALITY;
+    }
+
+    private static boolean qualityTooLow(Item item) {
+        return item.quality <= 0;
     }
 }

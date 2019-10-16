@@ -10,7 +10,7 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (Item item : items ) {
+        for (Item item : items) {
             handleItem(item);
         }
     }
@@ -30,41 +30,43 @@ class GildedRose {
                 default:
                     handleStandardItem(item);
             }
-        } catch (PerishableItemExpiredException e) {
+        } catch (DeadlineItemExpiredException e) {
 
         }
     }
 
     public void handleStandardItem(Item item) {
-        reduceQualityOf(item);
         reduceSellInOf(item);
-        if(isExpired(item)) {
-            reduceQualityOf(item);
-        }
+        int qualityDecrease = (isExpired(item) ? -2 : -1);
+        adjustQuality(item, qualityDecrease);
     }
 
     public void handlePreservedItem(Item item) {
-        increaseQualityOf(item);
         reduceSellInOf(item);
-        if(isExpired(item)) {
-            increaseQualityOf(item);
-        }
+        int qualityIncrease = (isExpired(item)) ? 2 : 1;
+        adjustQuality(item, qualityIncrease);
     }
 
     public void handleEpicItem(Item item) {}
 
     public void handleDeadlineItem(Item item) {
-        increaseQualityOf(item);
         reduceSellInOf(item);
+
         if(isExpired(item)) {
-            setQualityToZero(item);
-            throw new PerishableItemExpiredException(item); 
+            throw new DeadlineItemExpiredException(item); 
         }
-        if (isInDemand(item)) {
-            increaseQualityOf(item);
-        }
+
+        int qualityIncrease = calculateDeadlineQualityIncrease(item);
+        adjustQuality(item, qualityIncrease);
+    }
+
+    private int calculateDeadlineQualityIncrease(Item item) {
         if (isCoveted(item)) {
-            increaseQualityOf(item);
+            return 3;
+        } else if (isInDemand(item)) {
+            return 2;
+        } else {
+            return 1;
         }
     }
 }

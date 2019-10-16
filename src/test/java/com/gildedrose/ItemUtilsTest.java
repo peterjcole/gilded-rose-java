@@ -8,33 +8,33 @@ public class ItemUtilsTest {
 
 
     @Test
-    public void reduceQualityOf_shouldReduceQualityByOne() {
+    public void adjustQuality_shouldReduceQualityByOne() {
         Item greenTea = new Item("Green Tea", 5, 5);
-        ItemUtils.reduceQualityOf(greenTea);
+        ItemUtils.adjustQuality(greenTea, -1);
 
         assertEquals(4, greenTea.quality);
     }
 
     @Test
-    public void reduceQualityOf_shouldNotReduceQualityBelowZero() {
+    public void adjustQuality_shouldNotReduceQualityBelowZero() {
         Item greenTea = new Item("Green Tea", 5, 0);
-        ItemUtils.reduceQualityOf(greenTea);
+        ItemUtils.adjustQuality(greenTea, -1);
 
         assertEquals(0, greenTea.quality);
     }
 
     @Test
-    public void increaseQualityOf_shouldIncreaseQualityByOne() {
+    public void adjustQuality_shouldIncreaseQualityByOne() {
         Item blueCheese = new Item("Blue Cheese", 5, 5);
-        ItemUtils.increaseQualityOf(blueCheese);
+        ItemUtils.adjustQuality(blueCheese, 1);
 
         assertEquals(6, blueCheese.quality);
     }
 
     @Test
-    public void increaseQualityOf_shouldNotIncreaseQualityAboveMaximum() {
+    public void adjustQuality_shouldNotIncreaseQualityAboveMaximum() {
         Item blueCheese = new Item("Blue Cheese", 5, ItemUtils.MAXIMUM_QUALITY);
-        ItemUtils.increaseQualityOf(blueCheese);
+        ItemUtils.adjustQuality(blueCheese, 1);
 
 
         assertEquals(ItemUtils.MAXIMUM_QUALITY, blueCheese.quality);
