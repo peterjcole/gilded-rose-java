@@ -8,7 +8,7 @@ public class ItemUtils {
         boolean tooHigh = qualityTooHigh(item, qualityAdjustment);
         boolean tooLow = qualityTooLow(item);
 
-        item.quality += tooHigh || tooLow ? 0 : qualityAdjustment;
+        item.quality += (tooHigh || tooLow) ? 0 : qualityAdjustment;
     }
 
     public static void reduceSellInOf(Item item) {
