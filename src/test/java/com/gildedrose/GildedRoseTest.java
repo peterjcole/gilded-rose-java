@@ -34,7 +34,7 @@ public class GildedRoseTest {
         assertEquals(-2, app.items[0].sellIn);
     }
 
-        @Test
+    @Test
     public void updateQuality_shouldDegradeByTwo_whenSellInIsZero() {
         Item[] items = new Item[] { new Item("standard item", 0, 5) };
         GildedRose app = new GildedRose(items);
