@@ -4,14 +4,23 @@ import static com.gildedrose.ItemUtils.*;
 
 public class DeadlineItemStrategy implements ItemStrategy {
     public void update(Item item) {
-        reduceSellInOf(item);
+        try {
+            handleUpdate(item);
+        } catch (DeadlineItemExpiredException e) {
+            System.out.println(item.name + " is expired, please throw it away!");
+        }
+    }
 
+    private void handleUpdate(Item item) {
+        reduceSellInOf(item);
+        expireIfDeadlineHit(item);
+        adjustQuality(item, calculateDeadlineQualityIncrease(item));
+    }
+
+    private void expireIfDeadlineHit(Item item) {
         if(isExpired(item)) {
             throw new DeadlineItemExpiredException(item); 
         }
-
-        int qualityIncrease = calculateDeadlineQualityIncrease(item);
-        adjustQuality(item, qualityIncrease);
     }
 
     private int calculateDeadlineQualityIncrease(Item item) {

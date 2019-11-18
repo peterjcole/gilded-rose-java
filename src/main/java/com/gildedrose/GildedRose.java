@@ -1,6 +1,7 @@
 package com.gildedrose;
 
 import static com.gildedrose.ItemUtils.*;
+import java.util.Arrays;
 
 class GildedRose {
     Item[] items;
@@ -10,12 +11,7 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (Item item : items) {
-            try {
-                StockChecker.examine(item).update(item);
-            } catch (DeadlineItemExpiredException e) {
-                System.out.println("You have expired items, chuck them!");
-            }
-        }
+        Arrays.stream(items)
+            .forEach(item -> StockChecker.examine(item).update(item));
     }
 }

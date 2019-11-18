@@ -45,25 +45,18 @@ public class DeadlineItemStrategyTest {
     @Test
     public void updateQuality_shouldSetQualityForBackStagePassesToZero_whenSellInIsBelowZero() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20);
-        try {
-            deadlineItemStrategy.update(item);
-            fail("no exception thrown");
-        } catch (DeadlineItemExpiredException e) {
-            assertEquals(0, item.quality);
-            assertEquals(-1, item.sellIn);
-        }
+        deadlineItemStrategy.update(item);
+        assertEquals(0, item.quality);
+        assertEquals(-1, item.sellIn);
     }
 
 
     @Test
     public void updateQuality_shouldKeepQualityAtZero_afterDeadlineItemExpired() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", -1, 0);
-        try {
-            deadlineItemStrategy.update(item);
-            fail("no exception thrown");
-        } catch (DeadlineItemExpiredException e) {
-            assertEquals(0, item.quality);
-            assertEquals(-2, item.sellIn);
-        }
+        deadlineItemStrategy.update(item);
+
+        assertEquals(0, item.quality);
+        assertEquals(-2, item.sellIn);
     }
 }
